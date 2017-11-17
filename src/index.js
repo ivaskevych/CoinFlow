@@ -1,7 +1,5 @@
-import React from 'react';
-
 const Test = () => {
-    return 'Hello';
+  return 'Hello'
 }
- 
-export default Test;
+
+export default Test
