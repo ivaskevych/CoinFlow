@@ -1,4 +1,4 @@
-import { AppRegistry } from 'react-native';
-import App from './App';
+import { AppRegistry } from 'react-native'
+import router from './src'
 
-AppRegistry.registerComponent('CoinFlow', () => App);
+AppRegistry.registerComponent('CoinFlow', () => router)

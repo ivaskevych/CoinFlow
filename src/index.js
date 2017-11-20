@@ -1,12 +1,20 @@
-import React from 'react'
-import Icon from './components/Icon'
+import { StackNavigator } from 'react-navigation'
+import {
+  HomeContainer,
+  SettingsContainer,
+  OperationsListContainer
+} from './containers'
 
-const Test = () => {
-  return <Icon name='add'
-    reverse
-    color='#43A047'
-    onPress={() => console.log('open "Add activity modal"')}
-  />
-}
+export const router = StackNavigator({
+  Home: {
+    screen: HomeContainer
+  },
+  Operations: {
+    screen: OperationsListContainer
+  },
+  Settings: {
+    screen: SettingsContainer
+  }
+})
 
-export default Test
+export default router
