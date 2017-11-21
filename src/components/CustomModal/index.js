@@ -62,10 +62,9 @@ class CustomModal extends React.Component {
 
 const styles = StyleSheet.create({
   backdrop: {
-    backgroundColor: 'rgba(0, 0, 0, 0.4)',
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center'
+    justifyContent: 'center'
   },
   container: {
     backgroundColor: '#fff',
@@ -73,7 +72,9 @@ const styles = StyleSheet.create({
     paddingLeft: 15,
     paddingTop: 10,
     paddingBottom: 5,
-    minWidth: 300
+    marginRight: 25,
+    marginLeft: 25,
+    borderRadius: 2
   },
   title: {
     color: '#424242',
@@ -109,8 +110,8 @@ CustomModal.propTypes = {
 }
 
 CustomModal.defaultProps = {
-  closeText: 'Close',
-  saveText: 'Save',
+  closeText: 'CLOSE',
+  saveText: 'SAVE',
   onSubmit: null,
   title: null,
   hideOnBackdropClick: false

@@ -23,6 +23,7 @@ class Test extends React.Component {
         <Icon
           containerStyle={styles.addButton}
           name='add'
+          size={26}
           reverse
           raised
           color='#43A047'
@@ -49,8 +50,8 @@ const styles = StyleSheet.create({
   },
   addButton: {
     position: 'absolute',
-    right: 25,
-    top: window.height - 120
+    right: 10,
+    top: window.height - 105
   }
 })
 
