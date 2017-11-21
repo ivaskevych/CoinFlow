@@ -1,10 +1,9 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import { TextInput, View, StyleSheet, Dimensions, Button } from 'react-native'
+import { TextInput, View, StyleSheet, Button } from 'react-native'
 import CustomModal from '../components/CustomModal'
 import Icon from '../components/Icon'
 
-const window = Dimensions.get('window')
 class HomeContainer extends React.Component {
   static navigationOptions = {
     title: 'Home'
@@ -65,7 +64,7 @@ const styles = StyleSheet.create({
   addButton: {
     position: 'absolute',
     right: 10,
-    top: window.height - 105
+    bottom: 10
   }
 })
 
