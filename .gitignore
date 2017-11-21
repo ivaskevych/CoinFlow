@@ -36,6 +36,11 @@ node_modules/
 npm-debug.log
 yarn-error.log
 
+# Androi Linux
+index.android.bundle
+index.android.bundle.meta
+index.bundle.meta
+
 # BUCK
 buck-out/
 \.buckd/
