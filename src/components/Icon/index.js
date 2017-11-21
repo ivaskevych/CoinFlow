@@ -3,8 +3,7 @@ import React from 'react'
 import {
   View,
   StyleSheet,
-  TouchableHighlight,
-  Text as NativeText
+  TouchableHighlight
 } from 'react-native'
 import MaterialIcon from 'react-native-vector-icons/MaterialIcons'
 
@@ -75,8 +74,8 @@ Icon.propTypes = {
   underlayColor: PropTypes.string,
   reverse: PropTypes.bool,
   raised: PropTypes.bool,
-  containerStyle: View.propTypes.style,
-  iconStyle: NativeText.propTypes.style,
+  containerStyle: PropTypes.object,
+  iconStyle: PropTypes.object,
   onPress: PropTypes.func,
   reverseColor: PropTypes.string
 }
