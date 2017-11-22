@@ -61,6 +61,7 @@ PopupMenu.propTypes = {
 }
 
 PopupMenu.defaultProps = {
+  onPress: () => true,
   style: {},
   size: 24,
   name: 'more-vert',
