@@ -1,12 +1,20 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import { TextInput, View, StyleSheet, Button } from 'react-native'
+import { TextInput, View, StyleSheet } from 'react-native'
 import CustomModal from '../components/CustomModal'
 import Icon from '../components/Icon'
-
+import PopupMenu from '../components/PopupMenu'
 class HomeContainer extends React.Component {
-  static navigationOptions = {
-    title: 'Home'
+  static navigationOptions = ({ navigation }) => {
+    const { params = {} } = navigation.state
+    return {
+      title: 'Home',
+      headerRight: <PopupMenu
+        actions={['Operations', 'Settings']}
+        onPress={params.onPopupEvent}
+        style={{marginRight: 10}}
+      />
+    }
   }
 
   constructor (props) {
@@ -15,18 +23,26 @@ class HomeContainer extends React.Component {
       modalVisible: false
     }
     this.setModalVisible = this.setModalVisible.bind(this)
+    this.onPopupEvent = this.onPopupEvent.bind(this)
+  }
+
+  componentDidMount () {
+    this.props.navigation.setParams({ onPopupEvent: this.onPopupEvent })
   }
 
   setModalVisible (visible) {
     this.setState({modalVisible: visible})
   }
 
-  render () {
-    const { navigation: { navigate } } = this.props
+  onPopupEvent = (eventName, index) => {
+    if (eventName !== 'itemSelected') return
+    if (index === 0) this.props.navigation.navigate('Operations')
+    else this.props.navigation.navigate('Settings')
+  }
 
+  render () {
     return (
       <View style={styles.container}>
-        <Button onPress={() => navigate('Settings')} title='Settings' />
         <Icon
           containerStyle={styles.addButton}
           name='add'
@@ -52,7 +68,8 @@ class HomeContainer extends React.Component {
 
 HomeContainer.propTypes = {
   navigation: PropTypes.shape({
-    navigate: PropTypes.func
+    navigate: PropTypes.func,
+    setParams: PropTypes.func
   })
 }
 
