@@ -1,52 +1,51 @@
 import RNFS from 'react-native-fs'
 
-// err.code === 'ENOENT' no file code
-
 const filepath = RNFS.DocumentDirectoryPath + '/CoinFlowStore.json'
 
 // Create copy of Redux store
-/*
 const storeJson = {
   settings: {
     locale: ['uk-UA']
   }
 }
-
 const CoinFlowStore = JSON.stringify(storeJson)
-*/
 
-// Return Promise with true/false value for fileExist
-RNFS.exists(filepath)
+const exist = (path = filepath) =>
+  RNFS.exists(path)
 
-// Delete file, throw if file not exist
-/*
-RNFS.unlink(filepath)
+const del = (path = filepath) =>
+  RNFS.unlink(path)
     .then(() => {
-    console.log('FILE DELETED')
+      console.log('FILE DELETED')
+      return true
     })
     .catch((err) => {
-    console.log(err.message, err.code)
+      console.log(err.message, err.code)
+      return err
     })
-*/
 
-// Read file by path
-/*
-RNFS.readFile(filepath, 'utf8')
-    .then((contents) => {
-    console.log('contents', contents)
-    })
+const read = (path = filepath) =>
+  RNFS.readFile(path, 'utf8')
+    .then((contents) => contents)
     .catch((err) => {
-    console.log(err.message, err.code)
+      console.log(err.message, err.code)
+      return err
     })
-*/
 
-// Write file
-/*
-RNFS.writeFile(filepath, CoinFlowStore, 'utf8')
-    .then((success) => {
-    console.log('FILE WRITTEN!')
+const write = (path = filepath, content = CoinFlowStore) =>
+  RNFS.writeFile(path, content, 'utf8')
+    .then(() => {
+      console.log('FILE WRITTEN!')
+      return true
     })
     .catch((err) => {
-    console.log(err.message)
+      console.log(err.message)
+      return false
     })
-*/
+
+export default {
+  exist,
+  del,
+  read,
+  write
+}
