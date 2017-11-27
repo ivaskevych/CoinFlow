@@ -1,7 +1,9 @@
-import test from './test'
+import cards from './cards'
+import activities from './activities'
 
 const reducers = {
-  test
+  cards,
+  activities
 }
 
 export default reducers
