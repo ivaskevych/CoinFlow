@@ -4,6 +4,9 @@
     "browser": true,
     "jest": true
   },
+  "globals": {
+      "__DEV__": false
+  },
   "plugins": [
     "react"
   ],
