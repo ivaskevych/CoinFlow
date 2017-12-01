@@ -1,4 +1,5 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 import { View, ViewPagerAndroid, Text } from 'react-native'
 import ViewPagerDots from './ViewPagerDots'
 
@@ -43,6 +44,16 @@ class ViewPager extends React.Component {
       </View>
     )
   }
+}
+
+ViewPager.propTypes = {
+  data: PropTypes.array.isRequired,
+  onPageSelected: PropTypes.func.isRequired,
+  style: PropTypes.any
+}
+
+ViewPager.defaultProps = {
+  style: {}
 }
 
 export default ViewPager

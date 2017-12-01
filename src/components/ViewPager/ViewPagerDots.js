@@ -1,4 +1,5 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 import { View, StyleSheet, TouchableOpacity } from 'react-native'
 
 class ViewPagerDots extends React.Component {
@@ -64,5 +65,11 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgba(255, 255, 255, 0.3)'
   }
 })
+
+ViewPagerDots.propTypes = {
+  data: PropTypes.array.isRequired,
+  onPageSelected: PropTypes.func.isRequired,
+  viewPager: PropTypes.any
+}
 
 export default ViewPagerDots

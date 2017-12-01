@@ -1,17 +1,25 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
+import moment from 'moment'
 import { TextInput, View, StyleSheet, Text, ListView } from 'react-native'
+import DatePicker from 'react-native-datepicker'
 import CustomModal from '../components/CustomModal'
 import Icon from '../components/Icon'
 import PopupMenu from '../components/PopupMenu'
 import ViewPager from '../components/ViewPager'
 
 import {
+  selectActiveDate,
+  selectActiveCardId,
   selectCards,
-  selectActivities,
-  // selectActivitiesByDate
+  selectActivitiesByDate
 } from '../selectors'
+
+import {
+  setActiveDate,
+  setActiveCardId
+} from '../actions/config'
 class HomeContainer extends React.Component {
   static navigationOptions = ({ navigation }) => {
     const { params = {} } = navigation.state
@@ -31,8 +39,8 @@ class HomeContainer extends React.Component {
     this.state = {
       modalVisible: false,
       activePage: 0,
+      activeDate: null,
       activeCardId: null,
-      currentDate: '29-11-2017',
       dataSource: ds
     }
     this.setModalVisible = this.setModalVisible.bind(this)
@@ -45,16 +53,17 @@ class HomeContainer extends React.Component {
     this.props.navigation.setParams({ onPopupEvent: this.onPopupEvent })
     const cardId = this.props.cards[0].id
     this.setState({
-      activeCardId: this.props.cards[0].id,
-      dataSource: this.state.dataSource.cloneWithRows(this.props.activities[cardId][this.state.currentDate])
+      activeDate: this.props.date,
+      activeCardId: cardId,
+      dataSource: this.state.dataSource.cloneWithRows(this.props.activitiesByDate)
     })
   }
 
   componentWillReceiveProps (nextProps) {
-    if (this.props.activities !== nextProps.activities) {
+    if (this.props.activitiesByDate !== nextProps.activitiesByDate) {
       this.setState({
         dataSource: this.state.dataSource.cloneWithRows(
-          nextProps.activities[this.state.activeCardId][this.state.currentDate]
+          nextProps.activitiesByDate
         )
       })
     }
@@ -81,10 +90,11 @@ class HomeContainer extends React.Component {
     </View>
 
   changeData = (page, id) => {
+    this.props.setActiveCardId(id)
     this.setState({
       activePage: page,
       activeCardId: id,
-      dataSource: this.state.dataSource.cloneWithRows(this.props.activities[id][this.state.currentDate])
+      dataSource: this.state.dataSource.cloneWithRows(this.props.activitiesByDate)
     })
     this.listView.scrollTo({x: 0, y: 0, animated: true})
   }
@@ -92,6 +102,27 @@ class HomeContainer extends React.Component {
   render () {
     return (
       <View style={styles.container}>
+        <DatePicker
+          date={this.props.activeDate}
+          mode='date'
+          placeholder='select date'
+          format='DD-MM-YYYY'
+          maxDate={this.props.date}
+          confirmBtnText='Confirm'
+          cancelBtnText='Cancel'
+          // showIcon={false}
+          // androidMode='spinner'
+          customStyles={{
+            dateInput: {
+              borderWidth: 0
+            }
+          }}
+          iconComponent={<Icon
+            name='date-range'
+            color='#616161'
+          />}
+          onDateChange={(date) => this.props.setActiveDate(date)}
+        />
         <ViewPager
           style={styles.slider}
           onPageSelected={this.changeData}
@@ -99,13 +130,15 @@ class HomeContainer extends React.Component {
         />
         <View style={styles.listWrapper}>
           <View style={styles.divider}>
-            <Text>Page # {this.state.activePage}</Text>
-            <Text>Card ID {this.state.activeCardId}</Text>
+            <Text style={styles.infotext}>Page # {this.state.activePage}</Text>
+            <Text style={styles.infotext}>Card ID {this.props.activeCardId}</Text>
+            <Text style={styles.infotext}>Date # {this.props.activeDate}</Text>
           </View>
           <ListView
             ref={(c) => { this.listView = c }}
             dataSource={this.state.dataSource}
             renderRow={this.renderRow}
+            enableEmptySections
           />
         </View>
         <Icon
@@ -131,17 +164,26 @@ class HomeContainer extends React.Component {
   }
 }
 
-// const cardId = 'e435d915-969b-4913-a5b1-56bc368dfcb3'
-// const date = '29-11-2017'
-
 const mapStateToProps = state => {
+  const date = moment(new Date()).format('DD-MM-YYYY')
   const cards = selectCards(state)
-  const activities = selectActivities(state)
-  // const activities = selectActivitiesByDate(state, cardId, date)
+  const activeCardId = selectActiveCardId(state) || cards[0].id || ''
+  const activeDate = selectActiveDate(state) || date
+  const activitiesByDate = selectActivitiesByDate(state, activeCardId, activeDate)
 
   return {
+    date,
     cards,
-    activities
+    activeCardId,
+    activeDate,
+    activitiesByDate
+  }
+}
+
+const mapDispatchToProps = dispatch => {
+  return {
+    setActiveDate: (date) => dispatch(setActiveDate(date)),
+    setActiveCardId: (id) => dispatch(setActiveCardId(id))
   }
 }
 
@@ -149,7 +191,14 @@ HomeContainer.propTypes = {
   navigation: PropTypes.shape({
     navigate: PropTypes.func,
     setParams: PropTypes.func
-  })
+  }),
+  date: PropTypes.string.isRequired,
+  cards: PropTypes.array.isRequired,
+  activeCardId: PropTypes.string.isRequired,
+  activeDate: PropTypes.string.isRequired,
+  activitiesByDate: PropTypes.array.isRequired,
+  setActiveDate: PropTypes.func.isRequired,
+  setActiveCardId: PropTypes.func.isRequired
 }
 
 const styles = StyleSheet.create({
@@ -164,19 +213,24 @@ const styles = StyleSheet.create({
   },
   slider: {
     flex: 2,
-    backgroundColor: '#bbc'
+    backgroundColor: '#b2dfdb'
   },
   listWrapper: {
     flex: 3,
     backgroundColor: '#ccc'
   },
   divider: {
-    flexDirection: 'row',
+    flexDirection: 'column',
     alignItems: 'center',
     justifyContent: 'space-around',
+    backgroundColor: '#9fa8da',
     height: 60,
     padding: 10
+  },
+  infotext: {
+    fontWeight: '500',
+    color: '#fafafa'
   }
 })
 
-export default connect(mapStateToProps)(HomeContainer)
+export default connect(mapStateToProps, mapDispatchToProps)(HomeContainer)

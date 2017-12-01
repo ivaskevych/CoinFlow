@@ -1,3 +1,5 @@
+import moment from 'moment'
+
 const mockStore = {
   cards: [
     {
@@ -63,6 +65,16 @@ const mockStore = {
           amount: 3700,
           createdAt: 1511957084800,
           updatedAt: 1511957084800
+        }
+      ],
+      [moment(new Date()).format('DD-MM-YYYY')]: [
+        {
+          id: '66667686868686868687687687687',
+          cardId: 'd88c8cd2-eeaa-46b4-b727-953d6697431f',
+          name: 'New Card From action',
+          amount: 888,
+          createdAt: 1511957063500,
+          updatedAt: 1511957063500
         }
       ]
     }
